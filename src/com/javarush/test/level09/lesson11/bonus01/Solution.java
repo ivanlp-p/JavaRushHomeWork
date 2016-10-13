@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-
 /* Нужно исправить программу, чтобы компилировалась и работала
 Задача: Программа вводит два имени файла. И копирует первый файл на место заданное вторым именем.
 */
@@ -22,13 +21,7 @@ public class Solution
         java.io.FileOutputStream fileOutputStream = new java.io.FileOutputStream(destinationFileName);
 
         int count = 0;
-        /*while (fileInputStream.available() > 0);
-        {
-            int data = fileInputStream.read();
-            fileOutputStream.write(data);
-            count++;
-        }*/
-        while (fileInputStream.available() > 0)
+        while (fileInputStream.available()>0)
         {
             int data = fileInputStream.read();
             fileOutputStream.write(data);
