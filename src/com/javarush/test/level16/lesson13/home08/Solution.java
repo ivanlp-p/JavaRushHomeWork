@@ -51,6 +51,17 @@ public class Solution {
 
         public void run() {
             //add your code here - добавьте код тут
+            while(!isInterrupted()) {
+                try
+                {
+                    String str = reader.readLine();
+                    result.add(str);
+                    countReadStrings++;
+                } catch (IOException e) {
+
+                }
+
+            }
         }
 
         @Override
