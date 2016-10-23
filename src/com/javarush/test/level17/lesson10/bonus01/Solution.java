@@ -1,9 +1,6 @@
 package com.javarush.test.level17.lesson10.bonus01;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,66 +38,45 @@ public class Solution {
         allPeople.add(Person.createMale("Петров Петр", new Date()));  //сегодня родился    id=1
     }
 
-    public static void main(String[] args) {
-        //start here - начни тут
+    public static void main(String[] args) throws IOException, ParseException
+    {
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String command = new String();
-        try {
-             command = reader.readLine();
-            reader.close();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+        SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        if (args.length > 0) {
+            int id = 0;
+            try {
+                id = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e) {}
+            if (args[0].equals("-c")) {                     //Create
+                Date date = format1.parse(args[3]);
+                if (args[2].equals("м")) {
+                    allPeople.add(Person.createMale(args[1], date));
+                } else {
+                    allPeople.add(Person.createFemale(args[1], date));
+                }
+                System.out.println(allPeople.size() - 1);
+            } else if (args[0].equals("-u")) {          //Update
+                Date date = format1.parse(args[4]);
+                allPeople.get(id).setName(args[2]);
+                allPeople.get(id).setBirthDay(date);
+                if (args[3].equals("м")) {
+                    allPeople.get(id).setSex(Sex.MALE);
+                } else {
+                    allPeople.get(id).setSex(Sex.FEMALE);
+                }
+            } else if (args[0].equals("-d")) {          //Delete
+                allPeople.get(id).setBirthDay(null);
+                allPeople.get(id).setName(null);
+                allPeople.get(id).setSex(null);
+            } else if (args[0].equals("-i")) {          //Initialize
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+                if (allPeople.get(id).getSex().equals(Sex.MALE)){
+                    System.out.println(allPeople.get(id).getName() + " м " + dateFormat.format(allPeople.get(id).getBirthDay()));
+                } else if (allPeople.get(id).getSex().equals(Sex.FEMALE)) {
+                    System.out.println(allPeople.get(id).getName() + " ж " + dateFormat.format(allPeople.get(id).getBirthDay()));
+                }
 
-        String data[] = command.split(" ");
-
-        if (data[0].equals("-c")) {
-
-        } else if (data[0].equals("-u")) {
-            int id = Integer.parseInt(data[1]);
-            String name = data[1];
-            String sex = data[2];
-            DateFormat format = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
-
-            Date bd = null;
-            try
-            {
-                bd = format.parse(data[3]);
             }
-            catch (ParseException e)
-            {
-                e.printStackTrace();
-            }
-            if (sex.equals("м")) {
-                allPeople.remove(id);
-                allPeople.add(id, Person.createMale(name, bd));
-            } else if (sex.equals("ж")) {
-                allPeople.remove(id);
-                allPeople.add(id, Person.createFemale(name, bd));
-            }
-        }
-
-    }
-
-    public void createPerson(String data[]) {
-        String name = data[1];
-        String sex = data[2];
-        DateFormat format = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
-
-        Date bd = null;
-        try
-        {
-            bd = format.parse(data[3]);
-        }
-        catch (ParseException e)
-        {
-            e.printStackTrace();
-        }
-        if (sex.equals("м")) {
-            allPeople.add(Person.createMale(name, bd));
-        } else if (sex.equals("ж")) {
-            allPeople.add(Person.createFemale(name, bd));
         }
     }
 }
